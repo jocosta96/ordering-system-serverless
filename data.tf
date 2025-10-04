@@ -1,10 +1,10 @@
 data "kubernetes_service" "app_loadbalancer_service" {
-  
+
   metadata {
     name      = "svc-app-loadbalancer"
     namespace = "default"
   }
-  
+
 }
 
 
