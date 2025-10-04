@@ -32,12 +32,12 @@ resource "aws_api_gateway_method" "proxy" {
 }
 
 resource "aws_api_gateway_authorizer" "lambda_auth" {
-  name                   = "eks-lambda-authorizer"
-  rest_api_id            = aws_api_gateway_rest_api.api.id
-  authorizer_uri         = aws_lambda_function.authorizer.invoke_arn
+  name                             = "eks-lambda-authorizer"
+  rest_api_id                      = aws_api_gateway_rest_api.api.id
+  authorizer_uri                   = aws_lambda_function.authorizer.invoke_arn
   authorizer_result_ttl_in_seconds = 300
-  identity_source        = "method.request.header.Authorization"
-  type                   = "TOKEN"
+  identity_source                  = "method.request.header.Authorization"
+  type                             = "TOKEN"
 }
 
 resource "aws_api_gateway_integration" "proxy" {
@@ -51,7 +51,7 @@ resource "aws_api_gateway_integration" "proxy" {
 }
 
 resource "aws_api_gateway_deployment" "api" {
-  depends_on = [aws_api_gateway_integration.proxy]
+  depends_on  = [aws_api_gateway_integration.proxy]
   rest_api_id = aws_api_gateway_rest_api.api.id
 }
 
