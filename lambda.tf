@@ -47,7 +47,7 @@ resource "aws_api_gateway_integration" "proxy" {
 
   integration_http_method = "ANY"
   type                    = "HTTP_PROXY"
-  uri                     = "${data.kubernetes_service.app_loadbalancer_service.status[0].load_balancer[0].ingress[0].hostname}/{proxy}"
+  uri                     = "https://${data.kubernetes_service.app_loadbalancer_service.status[0].load_balancer[0].ingress[0].hostname}/{proxy}"
 }
 
 resource "aws_api_gateway_deployment" "api" {
