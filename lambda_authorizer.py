@@ -2,6 +2,9 @@ import os
     
 def lambda_handler(event, context):
     token = event.get('authorizationToken')
+    method_arn = event.get('methodArn')
+    arn_base = ':'.join(method_arn.split(':')[:-1])
+    resource = arn_base + ':*'
 
     if not token or token != os.environ.get("TOKEN"):
         return {
@@ -12,7 +15,7 @@ def lambda_handler(event, context):
                     {
                         "Action": "execute-api:Invoke",
                         "Effect": "Deny",
-                        "Resource": event.get('methodArn')
+                        "Resource": resource
                     }
                 ]
             }
@@ -26,7 +29,7 @@ def lambda_handler(event, context):
                 {
                     "Action": "execute-api:Invoke",
                     "Effect": "Allow",
-                    "Resource": event.get('methodArn')
+                    "Resource": resource
                 }
             ]
         }
