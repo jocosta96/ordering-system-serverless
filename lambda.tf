@@ -29,6 +29,9 @@ resource "aws_api_gateway_method" "proxy" {
   http_method   = "ANY"
   authorization = "CUSTOM"
   authorizer_id = aws_api_gateway_authorizer.lambda_auth.id
+  request_parameters = {
+    "method.request.path.proxy" = true
+  }
 }
 
 resource "aws_api_gateway_authorizer" "lambda_auth" {
@@ -48,6 +51,9 @@ resource "aws_api_gateway_integration" "proxy" {
   integration_http_method = "ANY"
   type                    = "HTTP_PROXY"
   uri                     = "http://${data.kubernetes_service.app_loadbalancer_service.status[0].load_balancer[0].ingress[0].hostname}/{proxy}"
+  request_parameters = {
+    "integration.request.path.proxy" = "method.request.path.proxy"
+  }
 }
 
 resource "aws_api_gateway_deployment" "api" {
